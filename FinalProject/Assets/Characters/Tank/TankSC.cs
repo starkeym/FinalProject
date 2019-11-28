@@ -10,6 +10,10 @@ public class TankSC : MonoBehaviour
     public float speed;
     public bool CanMove = true;
     ///////////////////////////////////////////////
+    public static float mana = 0;
+    public static float health = 250;
+    public static float attackDamage;
+
 
 
 

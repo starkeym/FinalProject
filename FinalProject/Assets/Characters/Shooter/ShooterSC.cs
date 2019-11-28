@@ -10,10 +10,16 @@ public class ShooterSC : MonoBehaviour
     public float speed;
     public bool CanMove = true;
     ///////////////////////////////////////////////
-
+    ///ATTACK///
+    public static float attackDamage;
+    public static float ultiDamage;
+    public static float mana = 0;
+    public static float health = 150;
+    
 
     public GameObject ShooterBullet;
     public GameObject BulletPos;
+    public GameObject UltiBullet;
 
 
     void Start()
@@ -23,6 +29,10 @@ public class ShooterSC : MonoBehaviour
 
     void Update()
     {
+        if(mana >=100)
+        {
+            mana = 100;
+        }
         if (CanMove)
         {
             Movement();
@@ -51,9 +61,14 @@ public class ShooterSC : MonoBehaviour
         }
     }
 
-    void PoweredAttack()
+    void Ulti()
     {
         //channel animation
-        //Senna ult?
+        if(mana >= 100 && Input.GetKeyDown("r"))
+        {
+            Instantiate(UltiBullet, BulletPos.transform.position, Quaternion.identity);
+
+        }
+            
     }
 }

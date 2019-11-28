@@ -10,7 +10,8 @@ public class HealerSC : MonoBehaviour
     public float speed;
     public bool CanMove = true;
     ///////////////////////////////////////////////
-
+    public static float mana = 0;
+    public static float health = 100;
 
 
     public GameObject HealerBullet;
@@ -37,6 +38,8 @@ public class HealerSC : MonoBehaviour
         {
             Instantiate(HealerBullet, BulletPos.transform.position, Quaternion.identity);
         }
+       
+
     }
 
     void ShieldBreaker()
