@@ -9,6 +9,7 @@ public class HealerBullet : MonoBehaviour
     public float speed;
     void Start()
     {
+        gameObject.transform.LookAt(MouseLook.pointToLook);
         rg.AddForce(transform.forward * speed);
     }
 

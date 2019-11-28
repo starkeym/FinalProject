@@ -9,6 +9,7 @@ public class ShooterBulletSC : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gameObject.transform.LookAt(MouseLook.pointToLook);
         rg.AddForce(transform.forward * speed);
     }
 
