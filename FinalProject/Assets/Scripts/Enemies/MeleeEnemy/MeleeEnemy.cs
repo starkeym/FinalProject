@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class MeleeEnemy : MonoBehaviour
 {
@@ -8,11 +9,36 @@ public class MeleeEnemy : MonoBehaviour
     public static bool hasArmor;
 
     public int health;
-
     
+    //heroes//
+    public GameObject Healer;
+    public GameObject Shooter;
+    public GameObject Tank;
+
+    /// heroes///
+
+    //enemyselection///
+    int enemyselection;
+    int priority;
+    //enemyselection//
+    NavMeshAgent agent;
+
     void Start()
     {
-        
+        agent = GetComponent<NavMeshAgent>();
+        enemyselection = Random.Range(1, 3);
+        if (enemyselection == 1)
+        {
+            agent.SetDestination(Healer.transform.position);
+        }
+        if (enemyselection == 2)
+        {
+            agent.SetDestination(Shooter.transform.position);
+        }
+        if (enemyselection == 3)
+        {
+            agent.SetDestination(Tank.transform.position);
+        }
     }
 
     // Update is called once per frame
@@ -27,7 +53,7 @@ public class MeleeEnemy : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         ////Shooter///
-        if (hasArmor == false && other.gameObject.tag=="ShooterBullet")
+        if (hasArmor == false && other.gameObject.tag == "ShooterBullet")
         {
             health -= 20;
             ShooterSC.mana += 10;
@@ -35,7 +61,7 @@ public class MeleeEnemy : MonoBehaviour
         if (hasArmor == false && other.gameObject.tag == "ShooterUltiBullet")
         {
             health -= 50;
-            
+
         }
         if (hasArmor == true && other.gameObject.tag == "ShooterBullet")
         {
@@ -45,26 +71,26 @@ public class MeleeEnemy : MonoBehaviour
         if (hasArmor == true && other.gameObject.tag == "ShooterUltiBullet")
         {
             health -= 25;
-            
+
         }
         ////Shooter////
 
         ////Tank////
-        if(hasArmor==false && other.gameObject.tag == "TankAttack")
+        if (hasArmor == false && other.gameObject.tag == "TankAttack")
         {
             health -= 20;
             TankSC.mana += 20;
-           
+
         }
-        if(hasArmor ==true && other.gameObject.tag =="TankAttack")
+        if (hasArmor == true && other.gameObject.tag == "TankAttack")
         {
             health -= 10;
             TankSC.mana += 20;
         }
         ////Tank////
-        
+
         ////Healer////
-        if(hasArmor ==false && other.gameObject.tag =="HealerBullet")
+        if (hasArmor == false && other.gameObject.tag == "HealerBullet")
         {
             health -= 20;
             HealerSC.mana = 25;
@@ -74,7 +100,7 @@ public class MeleeEnemy : MonoBehaviour
             health -= 10;
             HealerSC.mana = 25;
         }
-        if(hasArmor ==true && other.gameObject.tag =="HealerArmorBreaker")
+        if (hasArmor == true && other.gameObject.tag == "HealerArmorBreaker")
         {
             hasArmor = false;
         }

@@ -1,21 +1,72 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class RangedEnemySC : MonoBehaviour
 {
     // Start is called before the first frame update
-    public static bool hasArmor;
+    public bool hasArmor;
     public static float health = 100;
+
+    //heroes//
+    public GameObject Healer;
+    public GameObject Shooter;
+    public GameObject Tank;
+
+    /// heroes///
+    
+
+    //enemyselection///
+    int enemyselection;
+    int priority;
+    public float stoppingDistance;
+    //enemyselection//
+
+    //enemyattack///
+    public GameObject ReBullet;
+
+
+    NavMeshAgent agent;
     void Start()
     {
-        
+        agent = GetComponent<NavMeshAgent>();
+        enemyselection = Random.Range(1, 3);
+        if(enemyselection ==1)
+        {
+            agent.SetDestination(Healer.transform.position);
+        }
+        if (enemyselection == 2)
+        {
+            agent.SetDestination(Shooter.transform.position);
+        }
+        if (enemyselection == 3)
+        {
+            agent.SetDestination(Tank.transform.position);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        EnemyBehaviour();
+    }
+    void EnemyBehaviour()
+    {
+        if(agent.remainingDistance <= stoppingDistance)
+        {
+            EnemyAttack();
+        }
+    }
+    void EnemyAttack()
+    {
+        StartCoroutine(AttackCooldown());
+    }
+
+    IEnumerator AttackCooldown()
+    {
+        yield return new WaitForSeconds(1);
+        Instantiate(ReBullet, gameObject.transform.position, Quaternion.identity);
     }
     private void OnTriggerEnter(Collider other)
     {

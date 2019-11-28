@@ -23,10 +23,12 @@ public class HealerBullet : MonoBehaviour
         if(other.gameObject.tag =="Shooter")
         {
             ShooterSC.health += 20;
+            Destroy(gameObject);
         }
         if (other.gameObject.tag == "Tank")
         {
             TankSC.health += 20;
+            Destroy(gameObject);
         }
     }
 }

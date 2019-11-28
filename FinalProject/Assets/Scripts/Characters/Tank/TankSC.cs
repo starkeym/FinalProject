@@ -13,6 +13,9 @@ public class TankSC : MonoBehaviour
     public static float mana = 0;
     public static float health = 250;
     public static float attackDamage;
+    ///Taunt////
+    Rigidbody rg;
+    float tauntSpeed;
 
 
 
@@ -32,11 +35,17 @@ public class TankSC : MonoBehaviour
 
     void Attack()
     {
-
+        ///BurasıFurkan'ın slicer mekaniği ile yapması için ona bırakıldı.///
     }
     void Taunt()
     {
-
+        if(mana >= 100 && Input.GetMouseButtonDown(0))
+        {
+            tauntSpeed = 4;
+            rg.AddForce(MouseLook.pointToLook * tauntSpeed);
+            StartCoroutine(TauntJumpCooldown());
+            mana = 0;
+        }
     }
 
     void Movement()
@@ -50,5 +59,11 @@ public class TankSC : MonoBehaviour
 
             transform.rotation = Quaternion.LookRotation(moveDirection);
         }
+    }
+    IEnumerator TauntJumpCooldown()
+    {
+        yield return new WaitForSeconds(1);
+        tauntSpeed = 0;
+
     }
 }

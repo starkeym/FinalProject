@@ -15,6 +15,7 @@ public class ShooterSC : MonoBehaviour
     public static float ultiDamage;
     public static float mana = 0;
     public static float health = 150;
+    float timer = 0;
     
 
     public GameObject ShooterBullet;
@@ -54,8 +55,12 @@ public class ShooterSC : MonoBehaviour
 
     void Attack()
     {
-
-        if (Input.GetMouseButtonDown(1))
+        timer += Time.deltaTime;
+        if (timer >= 1)
+        {
+            timer = 0;
+        }
+        if (Input.GetMouseButtonDown(1) && timer <= 1)
         {
             Instantiate(ShooterBullet, BulletPos.transform.position, Quaternion.identity);
         }
@@ -64,10 +69,10 @@ public class ShooterSC : MonoBehaviour
     void Ulti()
     {
         //channel animation
-        if(mana >= 100 && Input.GetKeyDown("r"))
+        if(mana >= 100 && Input.GetMouseButtonDown(0))
         {
             Instantiate(UltiBullet, BulletPos.transform.position, Quaternion.identity);
-
+            mana = 0;
         }
             
     }
