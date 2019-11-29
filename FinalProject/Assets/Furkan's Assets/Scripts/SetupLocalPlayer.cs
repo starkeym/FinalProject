@@ -12,17 +12,16 @@ public class SetupLocalPlayer : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (isLocalPlayer)
+        if (isLocalPlayer==false)
         {
-            CmdspawnCharacter();
+            return;
         }
-
+        CmdspawnCharacter();
     }
 
     [Command]
     void CmdspawnCharacter() {
         localGameOBJ = Instantiate(Characters[chID]);
-        localGameOBJ.GetComponent<SimpleMovement>().enabled = true;
         NetworkServer.Spawn(localGameOBJ);
     }
 }

@@ -23,10 +23,7 @@ public class SimpleMovement : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isLocalPlayer)
-        {
             Movement();
-        }
     }
     void Movement()
     {
