@@ -4,5 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Furkan's Assets/Scenes/CharacterSelect.unity
+    guid: dc419fccf75fc0b4695983ab31fbb4df
+  - enabled: 1
+    path: Assets/Furkan's Assets/Scenes/NetworkTest.unity
+    guid: ed52ed6d104b8f14bbfc203ae07954a4
   m_configObjects: {}
