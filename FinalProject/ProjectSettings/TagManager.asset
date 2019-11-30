@@ -4,10 +4,17 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - chSelector
-  - 0
-  - 1
-  - 2
+  - Tauntcollider
+  - Tank
+  - Healer
+  - Shooter
+  - HealerArmorBreaker
+  - HealerBullet
+  - ShooterUltiBullet
+  - Enemy
+  - ShooterBullet
+  - MeleeEnemy
+  - Tankatkzone
   layers:
   - Default
   - TransparentFX

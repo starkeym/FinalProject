@@ -10,19 +10,25 @@ public class TankSC : MonoBehaviour
     public float speed;
     public bool CanMove = true;
     ///////////////////////////////////////////////
-    public static float mana = 0;
-    public static float health = 250;
+    public float mana = 0;
+    public float health = 250;
     public static float attackDamage;
+    GameObject TauntCollider;
+    GameObject Atkzone;
     ///Taunt////
     Rigidbody rg;
-    float tauntSpeed;
+    public float tauntSpeed;
 
 
 
 
     void Start()
     {
+        TauntCollider = GameObject.FindGameObjectWithTag("Tauntcollider");
+        rg = GetComponent<Rigidbody>();
         characterController = GetComponent<CharacterController>();
+        TauntCollider.SetActive(false);
+        Atkzone = GameObject.FindGameObjectWithTag("Tankatkzone");
     }
 
     void Update()
@@ -31,20 +37,26 @@ public class TankSC : MonoBehaviour
         {
             Movement();
         }
+        Taunt();
     }
 
     void Attack()
     {
-        ///BurasıFurkan'ın slicer mekaniği ile yapması için ona bırakıldı.///
+        
     }
     void Taunt()
     {
         if(mana >= 100 && Input.GetMouseButtonDown(0))
         {
-            tauntSpeed = 4;
-            rg.AddForce(MouseLook.pointToLook * tauntSpeed);
-            StartCoroutine(TauntJumpCooldown());
-            mana = 0;
+            TauntCollider.SetActive(true);
+            gameObject.GetComponent<CapsuleCollider>().enabled = false;
+            speed = 10;
+            Atkzone.GetComponent<BoxCollider>().enabled = false;
+            
+            
+            
+            //StartCoroutine(TauntJumpCooldown());
+            
         }
     }
 
@@ -62,8 +74,13 @@ public class TankSC : MonoBehaviour
     }
     IEnumerator TauntJumpCooldown()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(3);
         tauntSpeed = 0;
+        mana = 0;
+        Atkzone.GetComponent<BoxCollider>().enabled = true;
+        gameObject.GetComponent<Collider>().enabled = true;
+       
+        TauntCollider.SetActive(false);
 
     }
 }

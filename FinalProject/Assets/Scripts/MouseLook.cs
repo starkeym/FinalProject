@@ -29,7 +29,7 @@ public class MouseLook : MonoBehaviour
 
       
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Plane groundPlane = new Plane(Vector3.up+new Vector3(0,5,0), Vector3.zero);
+        Plane groundPlane = new Plane(Vector3.up, 0);
         
        
         if (groundPlane.Raycast(ray, out rayLength))  
@@ -39,7 +39,7 @@ public class MouseLook : MonoBehaviour
             Debug.DrawLine(ray.origin, pointToLook, Color.blue);
 
             
-            player.transform.LookAt(new Vector3(pointToLook.x,transform.position.y,pointToLook.z));
+            player.transform.LookAt(new Vector3(pointToLook.x,pointToLook.y,pointToLook.z));
             
 
         }
