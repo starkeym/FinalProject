@@ -5,18 +5,45 @@ using UnityEngine.SceneManagement;
 
 public class CharacterSelect : MonoBehaviour
 {
+    public GameObject NetworkManager;
+    public GameObject[] buttons;
     public void Shooter() {
-        SetupLocalPlayer.chID = 0;
-        SceneManager.LoadScene(1);
+        foreach (Transform item in gameObject.transform)
+        {
+
+            item.gameObject.tag = "0";
+        }
+        NetworkManager.SetActive(true);
+        foreach (var item in buttons)
+        {
+            item.SetActive(false);
+        }
     }
     public void Healer()
     {
-        SetupLocalPlayer.chID = 1;
-        SceneManager.LoadScene(1);
+        foreach (Transform item in gameObject.transform)
+        {
+
+            item.gameObject.tag = "1";
+        }
+        NetworkManager.SetActive(true);
+        foreach (var item in buttons)
+        {
+            item.SetActive(false);
+        }
     }
     public void Tank()
     {
-        SetupLocalPlayer.chID = 2;
-        SceneManager.LoadScene(1);
+        foreach (Transform item in gameObject.transform)
+        {
+
+            item.gameObject.tag = "2";
+        }
+
+        NetworkManager.SetActive(true);
+        foreach (var item in buttons)
+        {
+            item.SetActive(false);
+        }
     }
 }
