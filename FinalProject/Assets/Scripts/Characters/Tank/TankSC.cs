@@ -11,8 +11,9 @@ public class TankSC : MonoBehaviour
     public bool CanMove = true;
     ///////////////////////////////////////////////
     public static float mana = 0;
-    public static float health = 250;
+    public float health = 250;
     public static float attackDamage;
+    GameObject TauntCollider;
     ///Taunt////
     Rigidbody rg;
     float tauntSpeed;
@@ -22,7 +23,10 @@ public class TankSC : MonoBehaviour
 
     void Start()
     {
+        TauntCollider = GameObject.FindGameObjectWithTag("Tauntcollider");
+        rg = GetComponent<Rigidbody>();
         characterController = GetComponent<CharacterController>();
+        TauntCollider.SetActive(false);
     }
 
     void Update()
@@ -41,10 +45,12 @@ public class TankSC : MonoBehaviour
     {
         if(mana >= 100 && Input.GetMouseButtonDown(0))
         {
+            TauntCollider.SetActive(true);
+            gameObject.GetComponent<Collider>().enabled = false;
             tauntSpeed = 4;
             rg.AddForce(MouseLook.pointToLook * tauntSpeed);
             StartCoroutine(TauntJumpCooldown());
-            mana = 0;
+            
         }
     }
 
@@ -64,6 +70,9 @@ public class TankSC : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
         tauntSpeed = 0;
+        mana = 0;
+        gameObject.GetComponent<Collider>().enabled = true;
+        TauntCollider.SetActive(false);
 
     }
 }

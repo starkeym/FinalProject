@@ -11,7 +11,7 @@ public class HealerSC : MonoBehaviour
     public bool CanMove = true;
     ///////////////////////////////////////////////
     public static float mana = 0;
-    public static float health = 100;
+    public  float health = 100;
 
 
     public GameObject HealerBullet;

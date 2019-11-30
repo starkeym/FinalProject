@@ -14,7 +14,7 @@ public class ShooterSC : MonoBehaviour
     public static float attackDamage;
     public static float ultiDamage;
     public static float mana = 0;
-    public static float health = 150;
+    public float health = 150;
     float timer = 0;
     
 
@@ -76,4 +76,5 @@ public class ShooterSC : MonoBehaviour
         }
             
     }
+   
 }

@@ -21,6 +21,7 @@ public class RangedEnemySC : MonoBehaviour
     int enemyselection;
     int priority;
     public float stoppingDistance;
+    public string enemytag;
     //enemyselection//
 
     //enemyattack///
@@ -32,17 +33,20 @@ public class RangedEnemySC : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         enemyselection = Random.Range(1, 3);
-        if(enemyselection ==1)
+        if (enemyselection == 1)
         {
             agent.SetDestination(Healer.transform.position);
+            enemytag = "Healer";
         }
         if (enemyselection == 2)
         {
             agent.SetDestination(Shooter.transform.position);
+            enemytag = "Shooter";
         }
         if (enemyselection == 3)
         {
             agent.SetDestination(Tank.transform.position);
+            enemytag = "Tank";
         }
     }
 
