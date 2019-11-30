@@ -3,7 +3,18 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Tauntcollider
+  - Tank
+  - Healer
+  - Shooter
+  - HealerArmorBreaker
+  - HealerBullet
+  - ShooterUltiBullet
+  - Enemy
+  - ShooterBullet
+  - MeleeEnemy
+  - Tankatkzone
   layers:
   - Default
   - TransparentFX

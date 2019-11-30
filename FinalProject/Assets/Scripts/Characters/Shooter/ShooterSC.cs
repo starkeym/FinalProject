@@ -19,12 +19,12 @@ public class ShooterSC : MonoBehaviour
     
 
     public GameObject ShooterBullet;
-    public GameObject BulletPos;
     public GameObject UltiBullet;
 
 
     void Start()
     {
+        mana = 100;
         characterController = GetComponent<CharacterController>();
     }
 
@@ -38,6 +38,9 @@ public class ShooterSC : MonoBehaviour
         {
             Movement();
         }
+        Attack();
+        Ulti();
+        Debug.Log(mana);
     }
 
     void Movement()
@@ -62,7 +65,7 @@ public class ShooterSC : MonoBehaviour
         }
         if (Input.GetMouseButtonDown(1) && timer <= 1)
         {
-            Instantiate(ShooterBullet, BulletPos.transform.position, Quaternion.identity);
+            Instantiate(ShooterBullet, gameObject.transform.position, Quaternion.identity);
         }
     }
 
@@ -71,7 +74,7 @@ public class ShooterSC : MonoBehaviour
         //channel animation
         if(mana >= 100 && Input.GetMouseButtonDown(0))
         {
-            Instantiate(UltiBullet, BulletPos.transform.position, Quaternion.identity);
+            Instantiate(UltiBullet, gameObject.transform.position, Quaternion.identity);
             mana = 0;
         }
             

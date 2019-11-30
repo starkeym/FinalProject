@@ -6,13 +6,17 @@ using UnityEngine.AI;
 public class RangedEnemySC : MonoBehaviour
 {
     // Start is called before the first frame update
+    //Armor//
     public bool hasArmor;
-    public static float health = 100;
+    public Material Armored;
+    public Material RegularMaterial;
+    //Armor//
+    public float health = 100;
 
     //heroes//
-    public GameObject Healer;
-    public GameObject Shooter;
-    public GameObject Tank;
+    GameObject Healer;
+    GameObject Shooter;
+    GameObject Tank;
 
     /// heroes///
     
@@ -23,7 +27,9 @@ public class RangedEnemySC : MonoBehaviour
     public float stoppingDistance;
     public string enemytag;
     //enemyselection//
+    public GameObject SelectedEnemy;
 
+    public float nekadartauntlukalacak;
     //enemyattack///
     public GameObject ReBullet;
 
@@ -31,22 +37,28 @@ public class RangedEnemySC : MonoBehaviour
     NavMeshAgent agent;
     void Start()
     {
+        Healer = GameObject.FindGameObjectWithTag("Healer");
+        Shooter = GameObject.FindGameObjectWithTag("Shooter");
+        Tank = GameObject.FindGameObjectWithTag("Tank");
         agent = GetComponent<NavMeshAgent>();
         enemyselection = Random.Range(1, 3);
         if (enemyselection == 1)
         {
             agent.SetDestination(Healer.transform.position);
             enemytag = "Healer";
+            SelectedEnemy = GameObject.FindGameObjectWithTag(enemytag);
         }
         if (enemyselection == 2)
         {
             agent.SetDestination(Shooter.transform.position);
             enemytag = "Shooter";
+            SelectedEnemy = GameObject.FindGameObjectWithTag(enemytag);
         }
         if (enemyselection == 3)
         {
             agent.SetDestination(Tank.transform.position);
             enemytag = "Tank";
+            SelectedEnemy = GameObject.FindGameObjectWithTag(enemytag);
         }
     }
 
@@ -54,6 +66,7 @@ public class RangedEnemySC : MonoBehaviour
     void Update()
     {
         EnemyBehaviour();
+        isTaunted();
     }
     void EnemyBehaviour()
     {
@@ -67,10 +80,46 @@ public class RangedEnemySC : MonoBehaviour
         StartCoroutine(AttackCooldown());
     }
 
+
+    void ArmorRandomizer()
+    {
+        int a = Random.Range(0, 3);
+        if (a == 0)
+        {
+            hasArmor = true;
+        }
+        else { hasArmor = false; }
+
+    }
+
     IEnumerator AttackCooldown()
     {
         yield return new WaitForSeconds(1);
         Instantiate(ReBullet, gameObject.transform.position, Quaternion.identity);
+    }
+    IEnumerator isTaunted()
+    {
+        enemyselection = 3;
+        yield return new WaitForSeconds(nekadartauntlukalacak);
+        enemyselection = Random.Range(1, 3);
+        if (enemyselection == 1)
+        {
+            agent.SetDestination(Healer.transform.position);
+            enemytag = "Healer";
+            SelectedEnemy = GameObject.FindGameObjectWithTag(enemytag);
+        }
+        if (enemyselection == 2)
+        {
+            agent.SetDestination(Shooter.transform.position);
+            enemytag = "Shooter";
+            SelectedEnemy = GameObject.FindGameObjectWithTag(enemytag);
+        }
+        if (enemyselection == 3)
+        {
+            agent.SetDestination(Tank.transform.position);
+            enemytag = "Tank";
+            SelectedEnemy = GameObject.FindGameObjectWithTag(enemytag);
+        }
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -98,17 +147,7 @@ public class RangedEnemySC : MonoBehaviour
         ////Shooter////
 
         ////Tank////
-        if (hasArmor == false && other.gameObject.tag == "TankAttack")
-        {
-            health -= 20;
-            TankSC.mana += 20;
-
-        }
-        if (hasArmor == true && other.gameObject.tag == "TankAttack")
-        {
-            health -= 10;
-            TankSC.mana += 20;
-        }
+       
         ////Tank////
 
         ////Healer////

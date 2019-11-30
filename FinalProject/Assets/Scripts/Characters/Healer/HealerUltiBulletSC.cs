@@ -10,7 +10,8 @@ public class HealerUltiBulletSC : MonoBehaviour
     void Start()
     {
         rg = GetComponent<Rigidbody>();
-        rg.AddForce(MouseLook.pointToLook * speed);
+        gameObject.transform.LookAt(MouseLook.pointToLook);
+        rg.AddForce(transform.forward * speed);
     }
 
     // Update is called once per frame

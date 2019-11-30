@@ -6,21 +6,21 @@ using UnityEngine.AI;
 public class MeleeEnemy : MonoBehaviour
 {
     // Start is called before the first frame update
-    public static bool hasArmor;
-
+    //Armor//
+    public bool hasArmor;
+    public Material Armored;
+    public Material RegularMaterial;
+    //Armor//
     public int health;
-    
-    //heroes//
-    public GameObject Healer;
-    public GameObject Shooter;
-    public GameObject Tank;
+
 
     /// heroes///
-
+    public GameObject Tank;
+    
     //enemyselection///
     int enemyselection;
     int priority;
-    public string enemytag;
+    public string enemytag = "Shooter";
     public GameObject AttackZone;
 
     //enemyselection//
@@ -31,98 +31,148 @@ public class MeleeEnemy : MonoBehaviour
 
     ///EnemyAttack///
     ///Taunt///
+    public GameObject Taunt;
     public float nekadartauntlukalacak;
     public static NavMeshAgent agent;
+    bool isAlive = true;
+    bool tauntedbytank = false;
 
     void Start()
     {
+        enemytag = "Shooter";
+        SelectedEnemy = GameObject.FindGameObjectWithTag(enemytag);
+
         agent = GetComponent<NavMeshAgent>();
         enemyselection = Random.Range(1, 3);
         if (enemyselection == 1)
         {
-            agent.SetDestination(Healer.transform.position);
+            
             enemytag = "Healer";
+            SelectedEnemy = GameObject.FindGameObjectWithTag(enemytag);
+            agent.SetDestination(SelectedEnemy.transform.position);
+            
         }
         if (enemyselection == 2)
         {
-            agent.SetDestination(Shooter.transform.position);
+            
             enemytag = "Shooter";
+            SelectedEnemy = GameObject.FindGameObjectWithTag(enemytag);
+            agent.SetDestination(SelectedEnemy.transform.position);
+            
+            
         }
         if (enemyselection == 3)
         {
-            agent.SetDestination(Tank.transform.position);
+            
             enemytag = "Tank";
+            SelectedEnemy = GameObject.FindGameObjectWithTag(enemytag);
+            agent.SetDestination(SelectedEnemy.transform.position); 
+            
         }
+        ArmorRandomizer();
     }
 
     // Update is called once per frame
     void Update()
     {
-        gameObject.transform.rotation = SelectedEnemy.transform.rotation;
+        
         Attack();
+        if(health<=0)
+        {
+            isAlive = false;
+            Destroy(gameObject);
+        }
+        if (hasArmor == true)
+        {
+            gameObject.GetComponent<MeshRenderer>().material = Armored;
+        }
+        else { gameObject.GetComponent<MeshRenderer>().material = RegularMaterial; }
     }
     void Attack()
     {
         if(inAttackZone==true)
         {
-            agent.isStopped = true;
-            
+             
 
             StartCoroutine(AttackCountdown());
         }
-        else
+        
+    }
+    void Taunted()
+    {
+
+    }
+    void ArmorRandomizer()
+    {
+        int a = Random.Range(0, 3);
+        if(a == 0)
         {
-            agent.isStopped = false;
-            SelectedEnemy = GameObject.FindGameObjectWithTag(enemytag);
-            agent.SetDestination(SelectedEnemy.transform.position);
+            hasArmor = true;
         }
+        else { hasArmor = false; }
+        
     }
     IEnumerator AttackCountdown()
     {
         SelectedEnemy = GameObject.FindGameObjectWithTag(enemytag);
         yield return new WaitForSeconds(AttackCooldown);
-        SelectedEnemy.GetComponent<HealerSC>().health -= 10;
-        SelectedEnemy.GetComponent<ShooterSC>().health -= 10;
-        SelectedEnemy.GetComponent<TankSC>().health -= 10;
+        if(enemytag == "Shooter")
+        {
+            SelectedEnemy.GetComponent<ShooterSC>().health -= 10;
+        }
+        if (enemytag == "Healer")
+        {
+            SelectedEnemy.GetComponent<HealerSC>().health -= 10;
+        }
+        if (enemytag == "Tank")
+        {
+            SelectedEnemy.GetComponent<TankSC>().health -= 10;
+        }
+       
+        
+        
 
 
     }
     IEnumerator isTaunted()
     {
-        enemyselection = 3;
+       
+        
         yield return new WaitForSeconds(nekadartauntlukalacak);
         enemyselection = Random.Range(1, 3);
         if (enemyselection == 1)
         {
-            agent.SetDestination(Healer.transform.position);
             enemytag = "Healer";
+            SelectedEnemy = GameObject.FindGameObjectWithTag(enemytag);
+            agent.SetDestination(SelectedEnemy.transform.position);
+           
         }
         if (enemyselection == 2)
         {
-            agent.SetDestination(Shooter.transform.position);
             enemytag = "Shooter";
+            SelectedEnemy = GameObject.FindGameObjectWithTag(enemytag);
+            agent.SetDestination(SelectedEnemy.transform.position);
+
+            
         }
         if (enemyselection == 3)
         {
-            agent.SetDestination(Tank.transform.position);
             enemytag = "Tank";
+            SelectedEnemy = GameObject.FindGameObjectWithTag(enemytag);
+            agent.SetDestination(SelectedEnemy.transform.position);
+            
         }
     }
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         ////Shooter///
-        if (hasArmor == false && other.gameObject.tag == "ShooterBullet")
+        if (hasArmor == false && other.gameObject.tag == "ShooterBullet" )
         {
             health -= 20;
             ShooterSC.mana += 10;
             Destroy(other.gameObject);
         }
-        if (hasArmor == false && other.gameObject.tag == "ShooterUltiBullet")
-        {
-            health -= 50;
-
-
-        }
+        
         if (hasArmor == true && other.gameObject.tag == "ShooterBullet")
         {
             health -= 10;
@@ -137,20 +187,14 @@ public class MeleeEnemy : MonoBehaviour
         ////Shooter////
 
         ////Tank////
-        if (hasArmor == false && other.gameObject.tag == "TankAttack")
-        {
-            health -= 20;
-            TankSC.mana += 20;
-
-        }
-        if (hasArmor == true && other.gameObject.tag == "TankAttack")
-        {
-            health -= 10;
-            TankSC.mana += 20;
-        }
+       
         if(other.gameObject.tag =="Tauntcollider")
         {
-            isTaunted();
+            
+            
+            agent.SetDestination(Tank.transform.position);
+            //StartCoroutine(isTaunted());
+            
         }
         ////Tank////
 
@@ -158,13 +202,15 @@ public class MeleeEnemy : MonoBehaviour
         if (hasArmor == false && other.gameObject.tag == "HealerBullet")
         {
             health -= 20;
-            HealerSC.mana = 25;
+            HealerSC.mana += 25;
+            Debug.Log(HealerSC.mana );
             Destroy(other.gameObject);
         }
         if (hasArmor == true && other.gameObject.tag == "HealerBullet")
         {
             health -= 10;
-            HealerSC.mana = 25;
+            HealerSC.mana += 25;
+            Debug.Log(HealerSC.mana );
             Destroy(other.gameObject);
         }
         if (hasArmor == true && other.gameObject.tag == "HealerArmorBreaker")
@@ -174,5 +220,14 @@ public class MeleeEnemy : MonoBehaviour
         ////Healer////
 
 
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (hasArmor == false && other.gameObject.tag == "ShooterUltiBullet")
+        {
+            health -= 50;
+
+
+        }
     }
 }

@@ -34,6 +34,7 @@ public class HealerSC : MonoBehaviour
             Movement();
         }
         Attack();
+        Ulti();
     }
     
     void Attack()
@@ -46,7 +47,7 @@ public class HealerSC : MonoBehaviour
 
         if (Input.GetMouseButtonDown(1) && timer <=1)
         {
-            Instantiate(HealerBullet, BulletPos.transform.position, Quaternion.identity);
+            Instantiate(HealerBullet, gameObject.transform.position, Quaternion.identity);
         }
        
 
@@ -56,7 +57,7 @@ public class HealerSC : MonoBehaviour
     {
         if (mana >= 100 && Input.GetMouseButtonDown(0))
         {
-            Instantiate(UltiBullet, BulletPos.transform.position, Quaternion.identity);
+            Instantiate(UltiBullet, gameObject.transform.position, Quaternion.identity);
             mana = 0;
 
         }

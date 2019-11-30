@@ -21,19 +21,22 @@ public class HealerBullet : MonoBehaviour
     {
         
     }
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if(other.gameObject.tag =="Shooter")
         {
            
             hero = GameObject.FindGameObjectWithTag("Shooter");
             hero.GetComponent<ShooterSC>().health += 20;
+            Debug.Log(hero.GetComponent<ShooterSC>().health);
             Destroy(gameObject);
         }
         if (other.gameObject.tag == "Tank")
         {
             hero = GameObject.FindGameObjectWithTag("Tank");
+            hero = GameObject.FindGameObjectWithTag("Tank");
             hero.GetComponent<TankSC>().health += 20;
+            Debug.Log(hero.GetComponent<TankSC>().health);
             Destroy(gameObject);
         }
     }
