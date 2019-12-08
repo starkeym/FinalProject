@@ -24,10 +24,10 @@ public class TankSC : MonoBehaviour
 
     void Start()
     {
-        TauntCollider = GameObject.FindGameObjectWithTag("Tauntcollider");
+        TauntCollider = GameObject.FindGameObjectWithTag("TAUNT");
         rg = GetComponent<Rigidbody>();
         characterController = GetComponent<CharacterController>();
-        TauntCollider.SetActive(false);
+        
         Atkzone = GameObject.FindGameObjectWithTag("Tankatkzone");
     }
 

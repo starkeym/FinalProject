@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyBullet : MonoBehaviour
 {
    public GameObject OwnerofthisBullet;
-   GameObject ShootedEnemy;
+   public GameObject ShootedEnemy;
    Rigidbody rg;
    public float speed;
 
@@ -13,9 +13,11 @@ public class EnemyBullet : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       
+
         rg = GetComponent<Rigidbody>();
-        rg.AddForce(OwnerofthisBullet.GetComponent<RangedEnemySC>().SelectedEnemy.transform.position * speed);
+
+        rg.velocity = transform.forward * speed;
+
     }
 
     // Update is called once per frame
@@ -23,6 +25,7 @@ public class EnemyBullet : MonoBehaviour
     {
         
     }
+    
     private void OnTriggerStay(Collider other)
     {
         if(other.gameObject.tag=="Tank" || other.gameObject.tag =="Shooter" || other.gameObject.tag =="Healer")
@@ -46,4 +49,5 @@ public class EnemyBullet : MonoBehaviour
            
         }
     }
+    
 }

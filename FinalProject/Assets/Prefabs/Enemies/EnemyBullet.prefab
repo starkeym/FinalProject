@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3868394949064866454}
   - component: {fileID: 2346332220606441701}
   - component: {fileID: -7588732819935235633}
+  - component: {fileID: 5303350963060388683}
   m_Layer: 0
   m_Name: EnemyBullet
   m_TagString: Untagged
@@ -105,6 +106,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c69df5beabd8913449834ab08e064adc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OwnerofthisBullet: {fileID: 349081304724934136, guid: b8bf2fddff6d7114f8d5cd91038c179d,
+  OwnerofthisBullet: {fileID: 5278907750432713384, guid: b8bf2fddff6d7114f8d5cd91038c179d,
     type: 3}
+  ShootedEnemy: {fileID: 0}
+  speed: 50
   Damage: 10
+--- !u!54 &5303350963060388683
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6189150920005477353}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 2
+  m_Constraints: 116
+  m_CollisionDetection: 0
