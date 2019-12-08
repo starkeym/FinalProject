@@ -25,7 +25,9 @@ public class RangedEnemySC : MonoBehaviour
     //enemyselection///
     int enemyselection;
     int priority;
-    public float stoppingDistance;
+    float DistanceShooter;
+    float DistanceTank;
+    float DistanceHealer;
     public string enemytag;
     //enemyselection//
     public GameObject SelectedEnemy;
@@ -195,6 +197,12 @@ public class RangedEnemySC : MonoBehaviour
             health -= 20;
             ShooterSC.mana += 10;
             Destroy(other.gameObject);
+            DistanceShooter = Vector3.Distance(gameObject.transform.position, Tank.transform.position);
+            if(DistanceShooter < Distance)
+            {
+                enemytag = "Shooter";
+            }
+                
         }
 
         if (hasArmor == true && other.gameObject.tag == "ShooterBullet")
@@ -202,10 +210,21 @@ public class RangedEnemySC : MonoBehaviour
             health -= 10;
             ShooterSC.mana += 10;
             Destroy(other.gameObject);
+            DistanceShooter = Vector3.Distance(gameObject.transform.position, Tank.transform.position);
+            if (DistanceShooter < Distance)
+            {
+                enemytag = "Shooter";
+            }
         }
         if (hasArmor == true && other.gameObject.tag == "ShooterUltiBullet")
         {
             health -= 25;
+            DistanceShooter = Vector3.Distance(gameObject.transform.position, Tank.transform.position);
+            if (DistanceShooter < Distance)
+            {
+                enemytag = "Shooter";
+            }
+
 
         }
         ////Shooter////
@@ -222,6 +241,12 @@ public class RangedEnemySC : MonoBehaviour
             HealerSC.mana += 25;
             Debug.Log(HealerSC.mana);
             Destroy(other.gameObject);
+            DistanceHealer = Vector3.Distance(gameObject.transform.position, Healer.transform.position);
+            if (DistanceHealer <Distance)
+            {
+                enemytag = "Healer";
+
+            }
         }
         if (hasArmor == true && other.gameObject.tag == "HealerBullet")
         {
@@ -229,6 +254,12 @@ public class RangedEnemySC : MonoBehaviour
             HealerSC.mana += 25;
             Debug.Log(HealerSC.mana);
             Destroy(other.gameObject);
+            DistanceHealer = Vector3.Distance(gameObject.transform.position, Healer.transform.position);
+            if (DistanceHealer < Distance)
+            {
+                enemytag = "Healer";
+
+            }
         }
         if (hasArmor == true && other.gameObject.tag == "HealerArmorBreaker")
         {
