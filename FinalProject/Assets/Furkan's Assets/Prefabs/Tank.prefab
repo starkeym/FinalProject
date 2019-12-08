@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 7646915176540591618}
   - component: {fileID: 7646915176540591619}
   - component: {fileID: 7646915176540591620}
-  - component: {fileID: 7646915176540591647}
   - component: {fileID: 2512797620127465768}
   - component: {fileID: 7232927438635202824}
+  - component: {fileID: -7969516011651220563}
   m_Layer: 0
   m_Name: Tank
   m_TagString: Untagged
@@ -114,20 +114,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7646915176540591647
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7646915176540591621}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 277e1e93f18ba4748851725a9db8e472, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 5
-  CanMove: 1
 --- !u!114 &2512797620127465768
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,3 +169,17 @@ MonoBehaviour:
   m_SnapThreshold: 5
   m_InterpolateRotation: 1
   m_InterpolateMovement: 1.3
+--- !u!114 &-7969516011651220563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7646915176540591621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 277e1e93f18ba4748851725a9db8e472, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 5
+  CanMove: 1
