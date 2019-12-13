@@ -87,6 +87,7 @@ public class MeleeEnemy : MonoBehaviour
             gameObject.GetComponent<MeshRenderer>().material = Armored;
         }
         else { gameObject.GetComponent<MeshRenderer>().material = RegularMaterial; }
+        
     }
     void Attack()
     {
@@ -112,6 +113,7 @@ public class MeleeEnemy : MonoBehaviour
         else { hasArmor = false; }
         
     }
+    
     IEnumerator AttackCountdown()
     {
         SelectedEnemy = GameObject.FindGameObjectWithTag(enemytag);

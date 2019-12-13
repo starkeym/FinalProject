@@ -15,6 +15,7 @@ TagManager:
   - ShooterBullet
   - MeleeEnemy
   - Tankatkzone
+  - TAUNT
   layers:
   - Default
   - TransparentFX
