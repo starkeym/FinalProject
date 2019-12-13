@@ -11,8 +11,6 @@ public class ShooterSC : MonoBehaviour
     public bool CanMove = true;
     ///////////////////////////////////////////////
     ///ATTACK///
-    public static float attackDamage;
-    public static float ultiDamage;
     public static float mana = 0;
     public float health = 150;
     float timer = 0;

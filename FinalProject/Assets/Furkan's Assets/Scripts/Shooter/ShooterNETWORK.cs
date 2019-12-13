@@ -10,21 +10,34 @@ public class ShooterNETWORK : NetworkBehaviour
     ///////////////MOVEMENT/////////////////////////
     CharacterController cc;
     private Vector3 moveDirection = Vector3.zero;
-    public float speed = 5;
     public bool CanMove = true;
+
+
+
+    //////////////Properties///////////////////
+    public float speed = 5;
+    public float health = 100;
+    public float mana = 0;
+
+
+
     ////////////////ANIMATON/////////////////////
     Animator an = new Animator();
     GameObject forward;
-    ///////////////////////////////////////////////
 
+
+
+
+    ///////////////Shooting/////////////////////////
+    
+    public GameObject UltiBullet;
+    public GameObject bulletSpawnPos;
+    public GameObject bullet;
+    public float bulletSpeed=50;
 
 
     /////////////////////Network Variables///////
-
-    //[SyncList (hook = "OnChangeLayerWeight")]
-    //public float[] SynclayerWeight = new float[5];
     public SyncListFloat SynclayerWeight = new SyncListFloat();
-
     void OnIntChanged(SyncListFloat.Operation op, int index)
     {
         float[] localFloat = new float[5];
@@ -40,9 +53,15 @@ public class ShooterNETWORK : NetworkBehaviour
         }
         OnChangeLayerWeight(localFloat);
     }
-
     [SyncVar(hook ="OnChangeAnimationState")]
     public string SyncAnimState = ("idle");
+
+
+
+
+
+
+
 
     void Start()
     {
@@ -59,8 +78,60 @@ public class ShooterNETWORK : NetworkBehaviour
         {
             movement();
             HandleAnimations();
+            if (Input.GetMouseButtonDown(0))
+            {
+                CmdShoot();
+            }
+            if (Input.GetMouseButtonDown(1) && mana<=100)
+            {
+                //Ult();
+            }
         }
     }
+
+
+    void movement()
+    {
+        moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical"));
+        moveDirection *= speed;
+
+        cc.Move(moveDirection * Time.deltaTime);
+        if (Input.GetKey("a") || Input.GetKey("s") || Input.GetKey("d") || Input.GetKey("w"))
+        {
+
+            transform.rotation = Quaternion.LookRotation(moveDirection);
+        }
+    }
+
+
+    [Command]
+    void CmdShoot()
+    {
+        //instantiate
+        //Attack();
+        //RpcShoot();
+        GameObject localBullet = Instantiate(bullet, bulletSpawnPos.transform.position, bulletSpawnPos.transform.rotation);
+        localBullet.GetComponent<Rigidbody>().velocity = bulletSpawnPos.transform.forward * bulletSpeed;
+        NetworkServer.Spawn(localBullet);
+        Destroy(localBullet, 5.0f);
+    }
+
+
+
+
+    void Ult()
+    {
+        //channel animation
+        Instantiate(UltiBullet, gameObject.transform.position, Quaternion.identity);
+        mana = 0;
+    }
+
+
+
+
+
+
+
 
     void HandleAnimations() {
         // float angle = Mathf.Atan2(a, b) * Mathf.Rad2Deg;
@@ -178,7 +249,6 @@ public class ShooterNETWORK : NetworkBehaviour
 
     void UpdateLayerWeight(float[] anState)
     {
-        Debug.Log("2");
         /*
         bool localBool = true;
         for (int i = 0; i < 5; i++)
@@ -250,17 +320,5 @@ public class ShooterNETWORK : NetworkBehaviour
         return Vector3.zero;
     }
 
-    void movement()
-    {
-        moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical"));
-        moveDirection *= speed;
-
-        cc.Move(moveDirection * Time.deltaTime);
-        if (Input.GetKey("a") || Input.GetKey("s") || Input.GetKey("d") || Input.GetKey("w"))
-        {
-
-            transform.rotation = Quaternion.LookRotation(moveDirection);
-        }
-    }
 
 }
