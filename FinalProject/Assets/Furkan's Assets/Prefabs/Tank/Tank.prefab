@@ -1037,17 +1037,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a37fc22b00c68a14f89f94d611cd41e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CanMove: 1
   speed: 5
   health: 100
-  mana: 0
+  mana: 100
   damage: 5
+  ultRange: 50
+  ultSpeed: 500
   SlicerPlane: {fileID: 5719435478424156336, guid: f889146769a08074dbc1f8ad6fe25376,
     type: 3}
   slicerArea: {fileID: 0}
   m_LayerMaskEnemies:
     serializedVersion: 2
     m_Bits: 256
+  m_LayerMaskObstacles:
+    serializedVersion: 2
+    m_Bits: 0
+  SyncAnimState: idle
 --- !u!1 &5160919559781466365
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,17 +6,32 @@ using UnityEngine.Networking;
 public class EnemyTestNW : NetworkBehaviour
 {
     [SyncVar(hook = "CheckDeath")]
-    public float health=5;
+    public float health = 5;
+    [SyncVar]
+    public GameObject Target;
+    [SyncVar(hook ="Taunted")]
+    public bool isTaunted = false;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (isServer)
+        {
+           //movement;
+        }
+    }
+
+    void Taunted(bool tauntStatus) {
+        if (isServer)
+        {
+
+        }
     }
 
     void CheckDeath(float updatedHealth)

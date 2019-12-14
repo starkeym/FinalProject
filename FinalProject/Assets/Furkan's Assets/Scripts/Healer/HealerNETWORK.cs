@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class ShooterNETWORK : NetworkBehaviour
+public class HealerNETWORK : NetworkBehaviour
 {
 
 
@@ -30,11 +30,11 @@ public class ShooterNETWORK : NetworkBehaviour
 
 
     ///////////////Shooting/////////////////////////
-    
+
     public GameObject UltiBullet;
     public GameObject bulletSpawnPos;
     public GameObject bullet;
-    public float bulletSpeed=50;
+    public float bulletSpeed = 50;
 
 
     /////////////////////Network Variables///////
@@ -44,17 +44,17 @@ public class ShooterNETWORK : NetworkBehaviour
         float[] localFloat = new float[5];
         if (SynclayerWeight.Count != 5)
         {
-           // Debug.Log("asd");
+            // Debug.Log("asd");
             return;
         }
         for (int i = 0; i < 5; i++)
         {
-           // Debug.Log("bsd");
+            // Debug.Log("bsd");
             localFloat[i] = SynclayerWeight[i];
         }
         OnChangeLayerWeight(localFloat);
     }
-    [SyncVar(hook ="OnChangeAnimationState")]
+    [SyncVar(hook = "OnChangeAnimationState")]
     public string SyncAnimState = ("idle");
 
 
@@ -74,7 +74,7 @@ public class ShooterNETWORK : NetworkBehaviour
 
     void Update()
     {
-        SynclayerWeight.Callback=OnIntChanged;
+        SynclayerWeight.Callback = OnIntChanged;
         if (hasAuthority && CanMove)
         {
             movement();
@@ -83,7 +83,7 @@ public class ShooterNETWORK : NetworkBehaviour
             {
                 CmdShoot();
             }
-            if (Input.GetMouseButtonDown(1) && mana<=100)
+            if (Input.GetMouseButtonDown(1) && mana <= 100)
             {
                 //Ult();
             }
@@ -134,7 +134,8 @@ public class ShooterNETWORK : NetworkBehaviour
 
 
 
-    void HandleAnimations() {
+    void HandleAnimations()
+    {
         // float angle = Mathf.Atan2(a, b) * Mathf.Rad2Deg;
         // Vector3 targetDir = test.mouseposition - transform.position;
 
@@ -208,10 +209,10 @@ public class ShooterNETWORK : NetworkBehaviour
             CmdChangeAnimationState("idle");
         }
 
-        float[] localFloat=new float[5];
+        float[] localFloat = new float[5];
         for (int i = 0; i < 5; i++)
         {
-          localFloat[i]= an.GetLayerWeight(i+1);
+            localFloat[i] = an.GetLayerWeight(i + 1);
         }
 
         CmdAnimationLayerWeight(localFloat);
@@ -222,7 +223,8 @@ public class ShooterNETWORK : NetworkBehaviour
 
 
     //////////Updating on other clients that are  not us or server//////////////////
-    void OnChangeLayerWeight(float[] anState) {
+    void OnChangeLayerWeight(float[] anState)
+    {
         if (hasAuthority)
         {
             return;
@@ -230,7 +232,8 @@ public class ShooterNETWORK : NetworkBehaviour
         UpdateLayerWeight(anState);
         Debug.Log("1");
     }
-    void OnChangeAnimationState(string state) {
+    void OnChangeAnimationState(string state)
+    {
         if (hasAuthority)
         {
             return;
@@ -239,11 +242,13 @@ public class ShooterNETWORK : NetworkBehaviour
     }
     //////////Updating on the server//////////////////////////////////////////////////
     [Command]
-    void CmdAnimationLayerWeight(float[] anState){
+    void CmdAnimationLayerWeight(float[] anState)
+    {
         UpdateLayerWeight(anState);
     }
     [Command]
-    void CmdChangeAnimationState(string state) {
+    void CmdChangeAnimationState(string state)
+    {
         UpdateAnimationState(state);
     }
     ////////////////////////////////////////////////////////////////////////////////
@@ -269,27 +274,27 @@ public class ShooterNETWORK : NetworkBehaviour
         }*/
         //else
         //{
-            if (SynclayerWeight.Count!=5)
+        if (SynclayerWeight.Count != 5)
+        {
+            SynclayerWeight.Clear();
+            for (int i = 0; i < 5; i++)
             {
-                SynclayerWeight.Clear();
-                for (int i = 0; i < 5; i++)
-                {
-                    SynclayerWeight.Add(anState[i]);
-                }
+                SynclayerWeight.Add(anState[i]);
             }
-            else
+        }
+        else
+        {
+            for (int i = 0; i < 5; i++)
             {
-                for (int i = 0; i < 5; i++)
-                {
-                    SynclayerWeight[i] = anState[i];
-                }
+                SynclayerWeight[i] = anState[i];
             }
+        }
 
         //}
 
         for (int i = 0; i < 5; i++)
         {
-            an.SetLayerWeight(i+1,anState[i]);
+            an.SetLayerWeight(i + 1, anState[i]);
             Debug.Log("updatingLayerWeight");
         }
     }
@@ -301,9 +306,9 @@ public class ShooterNETWORK : NetworkBehaviour
         {
             an.SetBool("isWalking", true);
         }
-        if (state=="idle")
+        if (state == "idle")
         {
-            an.SetBool("isWalking",false);
+            an.SetBool("isWalking", false);
         }
     }
 
@@ -320,6 +325,4 @@ public class ShooterNETWORK : NetworkBehaviour
         }
         return Vector3.zero;
     }
-
-
 }

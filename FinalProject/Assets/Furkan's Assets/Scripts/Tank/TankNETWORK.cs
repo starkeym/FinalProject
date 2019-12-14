@@ -12,11 +12,13 @@ public class TankNETWORK : NetworkBehaviour
     bool CastingUlt;
 
     //////////////stats///////////////////
+    [SyncVar]
     public float speed = 5;
     public float health = 100;
-    public float mana = 0;
+    public float mana = 100;
     public float damage = 5;
-    public float ultRange;
+    public float ultRange=50;
+    public float ultSpeed=500;
 
     ////////////////ANIMATON/////////////////////
     Animator an = new Animator();
@@ -28,7 +30,7 @@ public class TankNETWORK : NetworkBehaviour
     public GameObject slicerArea;
     public LayerMask m_LayerMaskEnemies;
     public LayerMask m_LayerMaskObstacles;
-
+    Vector3 ultStartPoint;
     Vector3 ultDestination;
 
 
@@ -51,6 +53,7 @@ public class TankNETWORK : NetworkBehaviour
 
     void Update()
     {
+        Debug.DrawRay(gameObject.transform.position, GetMousePosition() - gameObject.transform.position);
         if (hasAuthority&&CanMove)
         {
             movement();
@@ -77,27 +80,36 @@ public class TankNETWORK : NetworkBehaviour
 
     void Attack()
     {
-
         Collider[] hitColliders = Physics.OverlapBox(slicerArea.transform.position, slicerArea.transform.localScale, Quaternion.identity, m_LayerMaskEnemies);
-        Debug.Log(hitColliders[0].gameObject.name);
         if (Input.GetMouseButtonDown(0))
         {
+            if (hitColliders.Length==0)
+            {
+                return;
+            }
             foreach (var item in hitColliders)
             {
                 item.GetComponent<EnemyTestNW>().health -= damage;
             }
         }
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetKeyDown("f"))
         {
-            if (mana>=100)
+            if (mana>=100f)
             {
+                Debug.Log("hi");
+
                 Vector3 localDestination =GetMousePosition();
                 RaycastHit hit;
                 if (Physics.Raycast(gameObject.transform.position,localDestination-gameObject.transform.position,out hit,ultRange,m_LayerMaskObstacles))
                 {
                     localDestination = hit.point;
                 }
+                ultStartPoint = gameObject.transform.position;
+                ultDestination = localDestination;
 
+
+
+                cc.detectCollisions = false;
                 CanMove = false;
                 CastingUlt = true;
                 mana = 0;
@@ -110,12 +122,20 @@ public class TankNETWORK : NetworkBehaviour
     }
     void Ult()
     {
-        if (true)
+        if (Vector3.Distance(ultStartPoint,gameObject.transform.position)>=ultRange)
         {
-
+            cc.detectCollisions = true;
+            CastingUlt = false;
+            CanMove = true;
+            return;
+        }
+        if (Vector3.Distance(gameObject.transform.position,ultDestination)>0.5f)
+        {
+            transform.position = Vector3.MoveTowards(transform.position,ultDestination,ultSpeed*Time.deltaTime);
         }
         else
         {
+            cc.detectCollisions = true;
             CanMove = true;
             CastingUlt = false;
         }
