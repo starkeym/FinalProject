@@ -44,6 +44,10 @@ public class RangedEnemySC : MonoBehaviour
 
     float timer = 0;
     NavMeshAgent agent;
+
+    /// <summary>
+    /// ////////HERONUN ÖLDÜĞÜNE DAİR BİR BOOLEAN ALMASI LAZIM
+    /// </summary>
     void Start()
     {
         Healer = GameObject.FindGameObjectWithTag("Healer");
