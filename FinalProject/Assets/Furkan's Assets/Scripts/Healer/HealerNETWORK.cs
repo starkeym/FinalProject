@@ -16,7 +16,7 @@ public class HealerNETWORK : NetworkBehaviour
 
     //////////////Properties///////////////////
     public float speed = 5;
-    [SyncVar]
+    [SyncVar(hook = "OnHealthChange")]
     public float health = 100;
     public float mana = 0;
 
@@ -122,14 +122,27 @@ public class HealerNETWORK : NetworkBehaviour
 
     void Ult()
     {
-        //channel animation
-        Instantiate(UltiBullet, gameObject.transform.position, Quaternion.identity);
-        mana = 0;
+
     }
 
 
 
-
+    void OnHealthChange(float newHealt)
+    {
+        if (newHealt > health)
+        {
+            //healParticle
+        }
+        else
+        {
+            //damageParticle
+        }
+        if (health <= 0)
+        {
+            //DeathAnimation
+            CanMove = false;
+        }
+    }
 
 
 

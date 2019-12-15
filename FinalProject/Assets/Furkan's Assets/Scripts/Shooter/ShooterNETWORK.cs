@@ -16,7 +16,7 @@ public class ShooterNETWORK : NetworkBehaviour
 
     //////////////Properties///////////////////
     public float speed = 5;
-    [SyncVar]
+    [SyncVar (hook ="OnHealthChange")]
     public float health = 100;
     public float mana = 0;
 
@@ -127,7 +127,22 @@ public class ShooterNETWORK : NetworkBehaviour
         mana = 0;
     }
 
-
+    void OnHealthChange(float newHealt)
+    {
+        if (newHealt>health)
+        {
+            //healParticle
+        }
+        else
+        {
+            //damageParticle
+        }
+        if (health<=0)
+        {
+            //DeathAnimation
+            CanMove = false;
+        }
+    }
 
 
 

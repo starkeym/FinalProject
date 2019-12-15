@@ -5,17 +5,29 @@ using UnityEngine.Networking;
 
 public class EnemyTestNW : NetworkBehaviour
 {
+
+    GameObject[] players;
+
     [SyncVar(hook = "CheckDeath")]
     public float health = 5;
     [SyncVar]
     public GameObject Target;
-    [SyncVar(hook ="Taunted")]
+    [SyncVar]
     public bool isTaunted = false;
 
-    // Start is called before the first frame update
+
+
+
+
+    public float speed = 5;
+    public float shootingRange;
+
     void Start()
     {
-
+        if (isServer)
+        {
+            Target = players[Random.Range(0,players.Length)];
+        }
     }
 
     // Update is called once per frame
@@ -23,15 +35,18 @@ public class EnemyTestNW : NetworkBehaviour
     {
         if (isServer)
         {
-           //movement;
+            attack(Target);
+            //movement;
         }
     }
-
-    void Taunted(bool tauntStatus) {
-        if (isServer)
+    void attack(GameObject target) {
+        if (Vector3.Distance(gameObject.transform.position,target.transform.position)>shootingRange)
         {
-
+            gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position,target.transform.position,speed);
+            return;
         }
+        ///yield shoot
+
     }
 
     void CheckDeath(float updatedHealth)

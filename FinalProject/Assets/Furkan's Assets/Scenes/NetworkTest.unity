@@ -187,6 +187,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 5
+  Target: {fileID: 0}
+  isTaunted: 0
 --- !u!65 &52943796
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -631,13 +633,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1477851123}
-  m_LocalRotation: {x: 0.31447524, y: -0, z: -0, w: 0.9492657}
-  m_LocalPosition: {x: 0, y: 115.08, z: -103.01}
+  m_LocalRotation: {x: 0.49937063, y: -0, z: -0, w: 0.8663885}
+  m_LocalPosition: {x: 0, y: 81.5, z: -60.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 36.658, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 59.917004, y: 0, z: 0}
 --- !u!1 &2108245377
 GameObject:
   m_ObjectHideFlags: 0
@@ -722,10 +724,10 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2108245377}
-  m_LocalRotation: {x: -0.8478877, y: 0.18950765, z: -0.32339364, w: -0.37495306}
+  m_LocalRotation: {x: -0.6561124, y: 0.5695111, z: -0.10647758, w: -0.48356622}
   m_LocalPosition: {x: -19.6, y: 39.5, z: 24.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: -229.324, y: -38.560974, z: 6.947998}
+  m_LocalEulerAnglesHint: {x: -229.098, y: 38.888992, z: 100.23599}

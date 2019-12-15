@@ -12,8 +12,9 @@ public class TankNETWORK : NetworkBehaviour
     bool CastingUlt;
 
     //////////////stats///////////////////
-    [SyncVar]
     public float speed = 5;
+    [SyncVar(hook = "OnHealthChange")]
+
     public float health = 100;
     public float mana = 100;
     public float damage = 5;
@@ -140,7 +141,24 @@ public class TankNETWORK : NetworkBehaviour
             CastingUlt = false;
         }
     }
-    
+
+    void OnHealthChange(float newHealt)
+    {
+        if (newHealt > health)
+        {
+            //healParticle
+        }
+        else
+        {
+            //damageParticle
+        }
+        if (health <= 0)
+        {
+            //DeathAnimation
+            CanMove = false;
+        }
+    }
+
     void handleAnimations() {
         if (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0)
         {
