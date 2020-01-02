@@ -16,6 +16,10 @@ TagManager:
   - MeleeEnemy
   - Tankatkzone
   - TAUNT
+  - Obst
+  - enemyBullet
+  - healingBullet
+  - shooterBullet
   layers:
   - Default
   - TransparentFX
@@ -26,9 +30,9 @@ TagManager:
   - 
   - 
   - Enemies
-  - 
-  - 
-  - 
+  - PostProcessing
+  - Obst
+  - Player
   - 
   - 
   - 

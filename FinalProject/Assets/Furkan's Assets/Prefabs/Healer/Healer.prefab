@@ -16,9 +16,9 @@ GameObject:
   - component: {fileID: 2512797620127465768}
   - component: {fileID: 7232927438635202824}
   - component: {fileID: 8253627495635771359}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Healer
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
