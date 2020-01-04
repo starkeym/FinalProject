@@ -17,6 +17,6 @@ public class Bullet_Shooter : MonoBehaviour
       GameObject.Find("Shooter").GetComponent<ShooterNETWORK>().changeMana(ManaGain);
       Destroy(gameObject);
     }
-    if(collision.gameObject.transform.parent.name!="Tank"&&collision.gameObject.transform.parent.name!="Shooter"&&collision.gameObject.transform.parent.name!="Healer")Destroy(gameObject);
+    //if(collision.gameObject.transform.parent.name!="Tank"&&collision.gameObject.transform.parent.name!="Shooter"&&collision.gameObject.transform.parent.name!="Healer")Destroy(gameObject);
   }
 }
