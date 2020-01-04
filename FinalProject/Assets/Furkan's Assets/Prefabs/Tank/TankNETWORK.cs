@@ -81,7 +81,7 @@ public class TankNETWORK : NetworkBehaviour
 
             movement();
             Attack();
-            //handleAnimations();
+            handleAnimations();
             
             updateInterval += Time.deltaTime;
             if (updateInterval > 0.06f) // 9 times per second
@@ -260,13 +260,13 @@ public class TankNETWORK : NetworkBehaviour
             an.SetBool("isWalking", false);
             CmdChangeAnimationState("idle");
         }
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0)&&CanMove)
         {
             an.SetBool("isAttacking",true);
             CmdChangeAnimationState("attack");
 
         }
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0)&&CanMove)
         {
             an.SetBool("isAttacking",false);
             CmdChangeAnimationState("idle");

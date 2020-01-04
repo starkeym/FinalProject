@@ -19,19 +19,21 @@ public class SetupLocalPlayer : NetworkBehaviour
         {
 
             CmdspawnCharacter(0);
-            gameObject.name="ShSpawner";
+            Destroy(this);
         }
 
         if (Input.GetKeyDown("2"))
         {
 
             CmdspawnCharacter(1);
+            Destroy(this);
         }
 
         if (Input.GetKeyDown("3"))
         {
 
             CmdspawnCharacter(2);
+            Destroy(this);
         }
     }
 
