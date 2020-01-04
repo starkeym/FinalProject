@@ -1483,7 +1483,6 @@ GameObject:
   - component: {fileID: 1853144721233290934}
   - component: {fileID: 5331875911491893844}
   - component: {fileID: 9112556137273127272}
-  - component: {fileID: 8772186011760801994}
   m_Layer: 11
   m_Name: Cube
   m_TagString: Untagged
@@ -1552,19 +1551,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &8772186011760801994
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4389317000343511454}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.9999999, y: 0.9999999, z: 0.9999999}
-  m_Center: {x: 0.00000023841856, y: 0.00000047683713, z: -0.00000047683713}
 --- !u!1 &4447453784351334304
 GameObject:
   m_ObjectHideFlags: 0
@@ -2438,7 +2424,7 @@ Transform:
   m_GameObject: {fileID: 6760437491421850681}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.3556, y: 4.53, z: -4.45}
-  m_LocalScale: {x: 46, y: 46, z: 46}
+  m_LocalScale: {x: 11, y: 11, z: 11}
   m_Children:
   - {fileID: 3662747379097237515}
   - {fileID: 7303827407332534534}
@@ -2534,12 +2520,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec8a90673b91a574c80634e8e48739f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CameraOffset: {x: 1.8, y: 17.44, z: -4.65}
+  CameraOffset: {x: 0.32, y: 5.32, z: 4.42}
   CanMove: 1
   HelathbarPrefab: {fileID: 4221795185712129523, guid: 4f7bcf6ebdecf8e4ababbbc939448e10,
     type: 3}
   healthbar: {fileID: 0}
-  speed: 10
+  speed: 3
   health: 100
   mana: 0
   UltiBullet: {fileID: 4912226953706681112, guid: b2bc9134a7e1f4b4e9d3113d1ce85d26,
@@ -2547,8 +2533,8 @@ MonoBehaviour:
   UltChannelDuration: 1
   bulletSpawnPos: {fileID: 2760189916571377872}
   bullet: {fileID: 4912226953706681112, guid: 73421419517906348973cbab10042e49, type: 3}
-  bulletSpeed: 50
-  ultBulletSpeed: 80
+  bulletSpeed: 20
+  ultBulletSpeed: 20
   SyncAnimState: idle
 --- !u!1 &6781610173620569140
 GameObject:
@@ -3418,7 +3404,6 @@ GameObject:
   - component: {fileID: 9134691907746749006}
   - component: {fileID: 3043901879893399685}
   - component: {fileID: 3720571384874533094}
-  - component: {fileID: 1652758180502278182}
   m_Layer: 11
   m_Name: Cube
   m_TagString: Untagged
@@ -3487,16 +3472,3 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &1652758180502278182
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9152458602671714092}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.9999999, y: 0.9999999, z: 0.9999999}
-  m_Center: {x: 0.00000023841856, y: 0.00000047683713, z: -0.00000047683713}

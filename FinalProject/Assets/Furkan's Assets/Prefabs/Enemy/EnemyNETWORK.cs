@@ -61,7 +61,7 @@ public class EnemyNETWORK : NetworkBehaviour
          
           if (isServer)
         {
-            int rng=Random.Range(1,2);
+            int rng=Random.Range(1,10);
             if(rng==1){
                 hasArmor=true;
                 armor = Instantiate(armorPrefab,gameObject.transform.position,Quaternion.identity);

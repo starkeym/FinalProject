@@ -922,7 +922,7 @@ Transform:
   m_GameObject: {fileID: 5093469650687180196}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -7.7808, y: -0.18, z: -30.925}
-  m_LocalScale: {x: 35, y: 35, z: 35}
+  m_LocalScale: {x: 10, y: 10, z: 10}
   m_Children:
   - {fileID: 3002481380476774806}
   - {fileID: 1772770906907974799}
@@ -1038,7 +1038,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a37fc22b00c68a14f89f94d611cd41e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CameraOffset: {x: 1.8, y: 17.44, z: -4.65}
+  CameraOffset: {x: 0.32, y: 5.32, z: 4.42}
   HelathbarPrefab: {fileID: 4221795185712129523, guid: 4f7bcf6ebdecf8e4ababbbc939448e10,
     type: 3}
   healthbar: {fileID: 0}
@@ -1047,7 +1047,7 @@ MonoBehaviour:
   mana: 10000
   damage: -5
   ultRange: 20
-  ultSpeed: 50
+  ultSpeed: 15
   tauntTrigger: {fileID: 7138044154271144305}
   SlicerPlane: {fileID: 5719435478424156336, guid: f889146769a08074dbc1f8ad6fe25376,
     type: 3}
@@ -1345,7 +1345,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &9204942173736540988
 Transform:
   m_ObjectHideFlags: 0

@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 5541343704430385066}
   - component: {fileID: -1798482060052006969}
   m_Layer: 0
-  m_Name: Bullet 1
+  m_Name: UltBullet
   m_TagString: shooterBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -179,5 +179,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f34c7dbc4bb915547809c49f68b39e1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: -5
-  ManaGain: 5
+  damage: -50
+  ManaGain: 0

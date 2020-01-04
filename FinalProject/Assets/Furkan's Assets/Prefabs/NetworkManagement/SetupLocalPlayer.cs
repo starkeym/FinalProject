@@ -40,10 +40,4 @@ public class SetupLocalPlayer : NetworkBehaviour
         localGameOBJ = Instantiate(Characters[id],GameObject.Find("SpawnPos").transform.position,Quaternion.identity);
         NetworkServer.SpawnWithClientAuthority(localGameOBJ, connectionToClient);
     }
-    [Command]
-    public void CmdassignAuth(GameObject bullet,GameObject obj){
-        bullet.GetComponent<NetworkIdentity>().AssignClientAuthority(connectionToClient);
-    obj.gameObject.GetComponent<NetworkIdentity>().AssignClientAuthority(bullet.GetComponent<NetworkIdentity>().connectionToClient);
-
-    }
 }

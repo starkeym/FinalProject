@@ -143,7 +143,7 @@ public class ShooterNETWORK : NetworkBehaviour
     }
     void movement()
     {
-        moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical"));
+        moveDirection = new Vector3(-Input.GetAxis("Horizontal"), 0.0f, -Input.GetAxis("Vertical"));
         moveDirection *= speed;
 
         cc.Move(moveDirection * Time.deltaTime);

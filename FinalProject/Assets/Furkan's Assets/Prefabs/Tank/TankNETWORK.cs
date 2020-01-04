@@ -121,7 +121,7 @@ public class TankNETWORK : NetworkBehaviour
     
     void movement()
     {
-        moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical"));
+        moveDirection = new Vector3(-Input.GetAxis("Horizontal"), 0.0f,-Input.GetAxis("Vertical"));
         moveDirection *= speed;
 
         cc.Move(moveDirection * Time.deltaTime);
@@ -233,7 +233,7 @@ public class TankNETWORK : NetworkBehaviour
 
             return;
         }
-        if (Vector3.Distance(gameObject.transform.position,ultDestination)>2f)
+        if (Vector3.Distance(gameObject.transform.position,ultDestination)>0.5f)
         {
             CmdUlt(true,gameObject.transform.position,ultDestination,ultSpeed*Time.deltaTime);
             transform.position = Vector3.MoveTowards(transform.position,ultDestination,ultSpeed*Time.deltaTime);
