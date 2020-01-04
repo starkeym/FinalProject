@@ -38,7 +38,9 @@ public class ShooterNETWORK : NetworkBehaviour
 
 
     ///////////////Shooting/////////////////////////
-    
+    public AudioClip shootingSound;
+    public AudioClip ultSound;
+    AudioSource audioSource;
     public GameObject UltiBullet;
     [SyncVar]
     Vector3 ShootingRot;
@@ -76,6 +78,7 @@ public class ShooterNETWORK : NetworkBehaviour
 
     void Start()
     {
+        audioSource=gameObject.GetComponent<AudioSource>();
         gameObject.name="Shooter";
         cc = gameObject.GetComponent<CharacterController>();
         an = gameObject.GetComponent<Animator>();
@@ -167,7 +170,8 @@ public class ShooterNETWORK : NetworkBehaviour
     [ClientRpc]
     void RpcShoot(Vector3 pos,Vector3 rot) {
         if (hasAuthority)return;
-        
+        audioSource.clip =shootingSound;
+        audioSource.Play();
         GameObject localBullet = 
         /*Bullet*/   Instantiate(bullet,
         /*Position*/ pos,
@@ -188,6 +192,8 @@ public class ShooterNETWORK : NetworkBehaviour
         /*Position*/ pos,
         /*Rotation*/ Quaternion.identity);
         localBullet.transform.LookAt(ShootingRot);
+        audioSource.clip =shootingSound;
+        audioSource.Play();
         CmdShoot(pos,ShootingRot);
         localBullet.GetComponent<Rigidbody>().velocity = localBullet.transform.forward * bulletSpeed;
         Destroy(localBullet,3f);
@@ -219,6 +225,8 @@ public class ShooterNETWORK : NetworkBehaviour
     {
                 //channel animation?
         CanMove=false;
+        audioSource.clip =ultSound;
+        audioSource.Play();
         yield return new WaitForSeconds(UltChannelDuration);
         Vector3 pos=new Vector3( bulletSpawnPos.transform.position.x,gameObject.transform.position.y,bulletSpawnPos.transform.position.z); 
         CanMove=true;

@@ -13,9 +13,10 @@ public class Bullet_Shooter : MonoBehaviour
     Destroy(gameObject, 5.0f);
   }
   void OnTriggerEnter(Collider collision){
+    
     if(collision.gameObject.tag=="RangedEnemy"||collision.gameObject.tag=="MeleeEnemy"){
       GameObject.Find("Shooter").GetComponent<ShooterNETWORK>().changeMana(ManaGain);
-      Destroy(gameObject);
+      if(gameObject.name!="UltBullet(Clone)")Destroy(gameObject);
     }
     //if(collision.gameObject.transform.parent.name!="Tank"&&collision.gameObject.transform.parent.name!="Shooter"&&collision.gameObject.transform.parent.name!="Healer")Destroy(gameObject);
   }
