@@ -7,6 +7,8 @@ using UnityEngine.Networking;
 public class TankNETWORK : NetworkBehaviour
 {
     ///////////////MOVEMENT/////////////////////////
+        public Vector3 CameraOffset;
+
         [SyncVar]
     Vector3 realPosition = Vector3.zero;
     [SyncVar]
@@ -26,7 +28,7 @@ public class TankNETWORK : NetworkBehaviour
 
     public float health = 100;
     public float mana = 100;
-    public float damage = 5;
+    public float damage = -5;
     public float ultRange=50;
     public float ultSpeed=500;
 
@@ -36,6 +38,7 @@ public class TankNETWORK : NetworkBehaviour
 
 
     ////////////////ATTACKING/////////////////////
+    public GameObject tauntTrigger;
     public GameObject SlicerPlane;
     GameObject slicerArea;
     public GameObject PlanePos;
@@ -54,13 +57,14 @@ public class TankNETWORK : NetworkBehaviour
 
     override public void OnStartAuthority(){
          slicerArea = Instantiate(SlicerPlane);
-         cc = gameObject.GetComponent<CharacterController>();
         }
     void Start()
     {
-        
+        cc = gameObject.GetComponent<CharacterController>();
+        gameObject.name="Tank";
         healthbar = Instantiate(HelathbarPrefab,Vector3.zero,Quaternion.identity)as Slider;
         healthbar.transform.SetParent(GameObject.Find("Canvas").transform);
+        healthbar.value=health;
         
         an = gameObject.GetComponent<Animator>();
         m_Started = true;
@@ -70,26 +74,27 @@ public class TankNETWORK : NetworkBehaviour
 
     void Update()
     {
-        Debug.Log(CanMove);
         Debug.DrawRay(gameObject.transform.position, GetMousePosition() - gameObject.transform.position);
         if (hasAuthority&&CanMove)
         {
+            Camera.main.transform.position=gameObject.transform.position+CameraOffset;
+
             movement();
             Attack();
             //handleAnimations();
             
             updateInterval += Time.deltaTime;
-            if (updateInterval > 0.11f) // 9 times per second
+            if (updateInterval > 0.06f) // 9 times per second
             {
              updateInterval = 0;
              CmdSync(transform.position, transform.rotation);
             }
         }
-        if(!hasAuthority){          
+        if(!hasAuthority&&!CastingUlt){          
             transform.position = Vector3.Lerp(transform.position, realPosition, 0.1f);
             transform.rotation = Quaternion.Lerp(transform.rotation, realRotation, 0.1f);
         }
-          if (CastingUlt)
+          if (CastingUlt&&hasAuthority)
         {
              Ult();
         }
@@ -134,6 +139,12 @@ public class TankNETWORK : NetworkBehaviour
             //Draw a cube where the OverlapBox is (positioned where your GameObject is as well as a size)
             Gizmos.DrawWireCube(slicerArea.transform.position, slicerArea.transform.localScale*8);
     }
+    
+    
+    [Command]
+    void CmdDealDamage(GameObject target){
+        target.GetComponent<EnemyNETWORK>().getDamage(damage);
+    }
     void Attack()
     {
         slicerArea.transform.position=PlanePos.transform.position;
@@ -147,10 +158,11 @@ public class TankNETWORK : NetworkBehaviour
             }
             foreach (var item in hitColliders)
             {
-                item.GetComponent<EnemyTestNW>().health -= damage;
+                CmdDealDamage(item.gameObject);
+
             }
         }
-        if (Input.GetKeyDown("f"))
+        if (Input.GetMouseButtonDown(1))
         {
             if (mana>=100f)
             {
@@ -162,9 +174,10 @@ public class TankNETWORK : NetworkBehaviour
                 }
                 ultStartPoint = gameObject.transform.position;
                 ultDestination = localDestination;
-                
 
 
+
+                gameObject.transform.LookAt(localDestination);
                 cc.detectCollisions = false;
                 CanMove = false;
                 CastingUlt = true;
@@ -176,11 +189,44 @@ public class TankNETWORK : NetworkBehaviour
             }
         }
     }
+   
+   [Command]
+   void CmdUlt(bool ultStatus,Vector3 startPos,Vector3 dest,float CmdSpeed){
+       
+       if(ultStatus){
+           CastingUlt=true;
+        cc.detectCollisions=false;
+        tauntTrigger.SetActive(true);
+        transform.position=Vector3.MoveTowards(startPos,dest,CmdSpeed);
+       }else{
+           CastingUlt=false;
+           gameObject.transform.position=dest;
+           cc.detectCollisions=true;
+           tauntTrigger.SetActive(false);
+       }
+       RpcUlt(ultStatus,startPos,dest,CmdSpeed);
+   }
+
+   [Client]
+   void RpcUlt(bool ultStatus,Vector3 startPos,Vector3 dest,float CmdSpeed){
+       if(hasAuthority)return;
+         if(ultStatus){
+             CastingUlt=true;
+            cc.detectCollisions=false;
+            tauntTrigger.SetActive(true);
+            transform.position=Vector3.MoveTowards(startPos,dest,CmdSpeed);
+         }else{
+             CastingUlt=false;
+           gameObject.transform.position=dest;
+           cc.detectCollisions=true;
+           tauntTrigger.SetActive(false);
+       }
+   }
     void Ult()
     {
-        Debug.Log("1");
         if (Vector3.Distance(ultStartPoint,gameObject.transform.position)>=ultRange)
         {
+            CmdUlt(false,Vector3.zero,gameObject.transform.position,0);
             cc.detectCollisions = true;
             CastingUlt = false;
             CanMove = true;
@@ -189,12 +235,12 @@ public class TankNETWORK : NetworkBehaviour
         }
         if (Vector3.Distance(gameObject.transform.position,ultDestination)>2f)
         {
+            CmdUlt(true,gameObject.transform.position,ultDestination,ultSpeed*Time.deltaTime);
             transform.position = Vector3.MoveTowards(transform.position,ultDestination,ultSpeed*Time.deltaTime);
         }
         else
         {
-                    Debug.Log("3");
-
+            CmdUlt(false,Vector3.zero,gameObject.transform.position,0);
             cc.detectCollisions = true;
             CastingUlt = false;
 
@@ -202,16 +248,6 @@ public class TankNETWORK : NetworkBehaviour
         }
     }
 
-    void OnHealthChange(float newHealt)
-    {
-        health=newHealt;
-        if (health <= 0)
-        {
-            Destroy(gameObject);
-            //DeathAnimation
-            //CanMove = false;
-        }
-    }
 
     void handleAnimations() {
         if (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0)
@@ -284,17 +320,39 @@ public class TankNETWORK : NetworkBehaviour
         return Vector3.zero;
     }
     
+    void OnHealthChange(float newHealt)
+    {
+        health=newHealt;
+        healthbar.value=health;
+        if (health <= 0)
+        {
+            health=0;
+            //Destroy(gameObject);
+            CanMove=false;
+            healthbar.gameObject.SetActive(false);
+
+            //DeathAnimation
+            //CanMove = false;
+        }
+    }
+    
     
     [Command]
     public void CmdChangeHealth(float value) {
-        health+=value;
+        if(health+value>=100){
+            health=100;
+        }else{
+            health+=value;
+        }
+        healthbar.value=health;
+        
     }
     void OnTriggerEnter(Collider collision){
         if(hasAuthority){
             if(collision.gameObject.tag=="enemyBullet"){
                 CmdChangeHealth(collision.gameObject.GetComponent<Bullet_Enemy>().damage);
             }else if(collision.gameObject.tag=="healingBullet"){
-                CmdChangeHealth(collision.gameObject.GetComponent<Bullet_Healer>().damage);
+                CmdChangeHealth(-collision.gameObject.GetComponent<Bullet_Healer>().damage);
 
             }
         }

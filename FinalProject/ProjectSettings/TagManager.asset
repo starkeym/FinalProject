@@ -20,6 +20,7 @@ TagManager:
   - enemyBullet
   - healingBullet
   - shooterBullet
+  - RangedEnemy
   layers:
   - Default
   - TransparentFX

@@ -2,24 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ult_Bullet_Shooter : MonoBehaviour
+public class TauntTrigger : MonoBehaviour
 {
     // Start is called before the first frame update
-    public float damage;
     void Start()
     {
         
     }
 
-    void OnTriggerEnter(Collider col){
-         if (col.gameObject.tag=="Enemy")
-        {
-            
-        }
-    }
     // Update is called once per frame
     void Update()
     {
         
+    }
+    void OnTriggerEnter(Collider collider){
+
+        if(collider.gameObject.name=="RangedEnemy"){
+            collider.gameObject.GetComponent<EnemyNETWORK>().getTaunted(GameObject.Find("Tank"));
+        }
     }
 }

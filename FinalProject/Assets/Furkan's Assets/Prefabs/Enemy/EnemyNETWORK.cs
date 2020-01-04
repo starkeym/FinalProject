@@ -17,7 +17,9 @@ public class EnemyNETWORK : NetworkBehaviour
     Quaternion realRotation;
     private float updateInterval;
 
-
+    public bool canPatrol=true;
+    public bool canAttack=true;
+    public bool canLookForPlayer=true;
 
     [SyncVar(hook = "CheckDeath")]
     public float health = 5;
@@ -29,10 +31,12 @@ public class EnemyNETWORK : NetworkBehaviour
     float viewRange= Mathf.Infinity;
 
 
-    [SyncVar]
     GameObject Target;
-    bool playerDetected = false;
-    
+    public bool playerDetected = false;
+    [SyncVar]
+    bool hasArmor;
+    public GameObject armorPrefab;
+    public GameObject armor;
 
 
     public GameObject bullet;
@@ -57,6 +61,12 @@ public class EnemyNETWORK : NetworkBehaviour
          
           if (isServer)
         {
+            int rng=Random.Range(1,2);
+            if(rng==1){
+                hasArmor=true;
+                armor = Instantiate(armorPrefab,gameObject.transform.position,Quaternion.identity);
+                armor.transform.SetParent(gameObject.transform);
+            }
             ////Getting patrol destinations.
             foreach (Transform tr in gameObject.transform){
                 if(tr.name=="Direction1")
@@ -72,7 +82,13 @@ public class EnemyNETWORK : NetworkBehaviour
             //Target = players[Random.Range(0,players.Length)];
             agent = GetComponent<NavMeshAgent>();
             agent.speed=speed;
-            //agent.SetDestination(Direction1);
+            if(canPatrol)agent.SetDestination(Direction1);
+        }
+        else{
+            if(hasArmor){
+                armor = Instantiate(armorPrefab,gameObject.transform.position,Quaternion.identity);
+                armor.transform.SetParent(gameObject.transform);
+            }
         }
         
         healthbar = Instantiate(HelathbarPrefab,Vector3.zero,Quaternion.identity)as Slider;
@@ -82,19 +98,18 @@ public class EnemyNETWORK : NetworkBehaviour
     }
     void Update()
     {
-        
          if (isServer)
         {
             if (playerDetected)
-            {               
-             attack(Target);
+            { 
+                if(canAttack)attack(Target);
             }else
             {            
-              //patrol();
-              lookForPlayer();
+               if(canPatrol)patrol();
+              if(canLookForPlayer)lookForPlayer();
             }
             updateInterval += Time.deltaTime;
-            if (updateInterval > 0.11f) // 9 times per second
+            if (updateInterval > 0.06f) // 9 times per second
             {
                 updateInterval = 0;
                 realPosition = transform.position;
@@ -165,9 +180,7 @@ public class EnemyNETWORK : NetworkBehaviour
          agent.destination.z==Direction2.z &&
         Vector2.Distance(new Vector2(gameObject.transform.position.x,gameObject.transform.position.z),new Vector2(Direction2.x,Direction2.z))<=1)agent.SetDestination(Direction1);
     }
-     void attack(GameObject target) {
-          Debug.DrawRay(transform.position,target.transform.position-gameObject.transform.position);
-
+    void attack(GameObject target) {
         gameObject.transform.LookAt(target.transform.position);
         if (Vector3.Distance(gameObject.transform.position,target.transform.position)>shootingRange||
         Physics.Raycast(transform.position,target.transform.position-gameObject.transform.position,Vector3.Distance(gameObject.transform.position,target.transform.position),obsLayerMask))
@@ -191,19 +204,18 @@ public class EnemyNETWORK : NetworkBehaviour
             StartCoroutine(cooldownCountdown());
         }
     }
-
     [ClientRpc]
-    void RpcShoot(GameObject target){
+    void RpcShoot(GameObject ShootingTarget){
         if(isServer)return;
             GameObject localBullet = Instantiate(bullet,forward.transform.position,Quaternion.identity);
-            localBullet.transform.LookAt(new Vector3(target.transform.position.x,transform.position.y,target.transform.position.z));
+            localBullet.transform.LookAt(new Vector3(ShootingTarget.transform.position.x,transform.position.y,ShootingTarget.transform.position.z));
             localBullet.GetComponent<Rigidbody>().velocity=localBullet.transform.forward * bulletSpeed;
     }
     IEnumerator cooldownCountdown(){        
         yield return new WaitForSeconds(attackCooldown);
         onCooldown=false;
     }
-     void CheckDeath(float updatedHealth)
+    void CheckDeath(float updatedHealth)
     {
         health=updatedHealth;
         healthbar.value=health;
@@ -217,10 +229,48 @@ public class EnemyNETWORK : NetworkBehaviour
     void OnTriggerEnter(Collider collider){
         if(!isServer)return;
         if(collider.gameObject.tag=="shooterBullet"){
-            health += collider.GetComponent<Bullet_Shooter>().damage;
-            healthbar.value=health;
+            getDamage(collider.GetComponent<Bullet_Shooter>().damage);
         }else if(collider.gameObject.tag=="healingBullet"){
-            health+=collider.GetComponent<Bullet_Healer>().damage;
+            getDamage(collider.GetComponent<Bullet_Healer>().damage);
         }
     }
+    public void getDamage(float value){
+        if(!isServer){return;}
+        if(!playerDetected){
+            getAgro();
+        }
+        if(hasArmor){
+            value=value/2;
+        }
+        health+=value;
+        healthbar.value=health;
+
+    }
+    public void getTaunted(GameObject taunter){
+        if(isServer){
+            playerDetected=true;
+            Target=taunter;
+        }
+    }
+
+    public void getAgro(){
+        UpdatePlayersList();
+        Target=players[Random.Range(0,players.Length)];
+        playerDetected=true;
+    }
+    public void armorBreak(){
+        if(isServer){
+            hasArmor=false;
+            Destroy(armor);
+            RpcdestroyArmor();
+        }
+    }
+
+     [ClientRpc]
+     void RpcdestroyArmor(){
+        if(isServer)return;
+
+        hasArmor=false;
+        Destroy(armor);
+     }
 }

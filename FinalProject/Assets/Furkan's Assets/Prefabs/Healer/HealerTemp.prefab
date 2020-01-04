@@ -1209,7 +1209,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3382215427014862858}
   m_Layer: 11
-  m_Name: ShooterForward
+  m_Name: HealerForward
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2421,9 +2421,9 @@ GameObject:
   - component: {fileID: 360494737497322320}
   - component: {fileID: 6760437491421850685}
   - component: {fileID: 6760437491421850684}
-  - component: {fileID: 6760437491421850682}
+  - component: {fileID: 4193595946529391892}
   m_Layer: 11
-  m_Name: Shooter
+  m_Name: HealerTemp
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2522,7 +2522,7 @@ MonoBehaviour:
     i15: 0
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 1
---- !u!114 &6760437491421850682
+--- !u!114 &4193595946529391892
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2531,7 +2531,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6760437491421850681}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec8a90673b91a574c80634e8e48739f3, type: 3}
+  m_Script: {fileID: 11500000, guid: 05c888ffc539c9641821ae2011524484, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   CameraOffset: {x: 1.8, y: 17.44, z: -4.65}
@@ -2542,11 +2542,10 @@ MonoBehaviour:
   speed: 10
   health: 100
   mana: 0
-  UltiBullet: {fileID: 4912226953706681112, guid: b2bc9134a7e1f4b4e9d3113d1ce85d26,
-    type: 3}
-  UltChannelDuration: 1
+  UltiBullet: {fileID: 0}
+  UltChannelDuration: 0
   bulletSpawnPos: {fileID: 2760189916571377872}
-  bullet: {fileID: 4912226953706681112, guid: 73421419517906348973cbab10042e49, type: 3}
+  bullet: {fileID: 4912226953706681112, guid: 8c26344052bf3a94b90e2611d1c1f219, type: 3}
   bulletSpeed: 50
   ultBulletSpeed: 80
   SyncAnimState: idle

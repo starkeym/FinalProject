@@ -234,7 +234,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 670224309865224971, guid: 7d1b54d89b9fc0348aff8cc128fd95d4, type: 3}
+  - {fileID: 2100000, guid: e10f1c703eead3c469557a478053f952, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -930,6 +930,7 @@ Transform:
   - {fileID: 591880198614682089}
   - {fileID: 4982341974073196234}
   - {fileID: 2829973092052347620}
+  - {fileID: 9204942173736540988}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1037,12 +1038,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a37fc22b00c68a14f89f94d611cd41e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CameraOffset: {x: 1.8, y: 17.44, z: -4.65}
+  HelathbarPrefab: {fileID: 4221795185712129523, guid: 4f7bcf6ebdecf8e4ababbbc939448e10,
+    type: 3}
+  healthbar: {fileID: 0}
   speed: 5
-  health: 5
+  health: 100
   mana: 10000
-  damage: 5
+  damage: -5
   ultRange: 20
   ultSpeed: 50
+  tauntTrigger: {fileID: 7138044154271144305}
   SlicerPlane: {fileID: 5719435478424156336, guid: f889146769a08074dbc1f8ad6fe25376,
     type: 3}
   PlanePos: {fileID: 8288487620129891743}
@@ -1322,6 +1328,63 @@ Transform:
   m_Father: {fileID: 8578839004589616433}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7138044154271144305
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9204942173736540988}
+  - component: {fileID: 4856654317142924767}
+  - component: {fileID: 7042594306930015630}
+  m_Layer: 11
+  m_Name: TauntTrigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &9204942173736540988
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7138044154271144305}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.0632, z: 0.0562}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8139405793509756855}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &4856654317142924767
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7138044154271144305}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.06048911, y: 0.053471647, z: 0.06535165}
+  m_Center: {x: 0.000132261, y: -0.015827717, z: -0.037589375}
+--- !u!114 &7042594306930015630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7138044154271144305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d3f440181e67f64882ded1d0572a6c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7225222308518821410
 GameObject:
   m_ObjectHideFlags: 0

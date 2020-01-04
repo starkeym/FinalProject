@@ -27,6 +27,7 @@ public class ShooterNETWORK : NetworkBehaviour
     public float speed = 5;
     [SyncVar (hook ="OnHealthChange")]
     public float health = 100;
+    [SyncVar]
     public float mana = 0;
 
 
@@ -45,6 +46,8 @@ public class ShooterNETWORK : NetworkBehaviour
     public GameObject bulletSpawnPos;
     public GameObject bullet;
     public float bulletSpeed=50;
+    public float ultBulletSpeed=80;
+
 
 
     /////////////////////Network Variables///////
@@ -73,7 +76,7 @@ public class ShooterNETWORK : NetworkBehaviour
 
     void Start()
     {
-        
+        gameObject.name="Shooter";
         cc = gameObject.GetComponent<CharacterController>();
         an = gameObject.GetComponent<Animator>();
         forward = GameObject.Find("ShooterForward");
@@ -90,8 +93,11 @@ public class ShooterNETWORK : NetworkBehaviour
         if (hasAuthority && CanMove)
         {
             Camera.main.transform.position=gameObject.transform.position+CameraOffset;
+            
             movement();
+         
             HandleAnimations();
+         
             if (Input.GetMouseButtonDown(0))
             {
                 ShootingRot=GetMousePosition();
@@ -100,11 +106,11 @@ public class ShooterNETWORK : NetworkBehaviour
             if (Input.GetMouseButtonDown(1) && mana>=100)
             {
                 //Ult Not Finished Yet
-                //StartCouratine(Ult());
-                //CmdUlt();
+                ShootingRot=GetMousePosition();
+                StartCoroutine(Ult());
             }
             updateInterval += Time.deltaTime;
-            if (updateInterval > 0.11f) // 9 times per second
+            if (updateInterval > 0.06f) // 9 times per second
             {
                 updateInterval = 0;
                 CmdSync(transform.position, transform.rotation);
@@ -189,33 +195,43 @@ public class ShooterNETWORK : NetworkBehaviour
 
 
     [Command]
-    void CmdUlt()
+    void CmdUlt(Vector3 pos,Vector3 rot)
     {
-        RpcUlt();
+        RpcUlt(pos,rot);
     }
     [ClientRpc]
-    void RpcUlt()
+    void RpcUlt(Vector3 pos,Vector3 rot)
     {
         if (hasAuthority) return;
-        Ult();
+        GameObject localBullet = 
+        /*Bullet*/   Instantiate(UltiBullet,
+        /*Position*/ pos,
+        /*Rotation*/ Quaternion.identity);
+        localBullet.transform.LookAt(rot);
+        localBullet.GetComponent<Rigidbody>().velocity = localBullet.transform.forward * ultBulletSpeed;
+        Destroy(localBullet,3f);
+        mana -= 100;
     }
 
 
 
     IEnumerator Ult()
     {
+                //channel animation?
+        CanMove=false;
         yield return new WaitForSeconds(UltChannelDuration);
-        //channel animation?
         Vector3 pos=new Vector3( bulletSpawnPos.transform.position.x,gameObject.transform.position.y,bulletSpawnPos.transform.position.z); 
-        Quaternion rot= bulletSpawnPos.transform.rotation;rot.x=0;rot.z=0;      
+        CanMove=true;
+        //Quaternion rot= bulletSpawnPos.transform.rotation;rot.x=0;rot.z=0;      
 
         GameObject localBullet = 
         /*Bullet*/   Instantiate(UltiBullet,
         /*Position*/ pos,
-        /*Rotation*/ rot);
-        localBullet.GetComponent<Rigidbody>().velocity = localBullet.transform.forward * bulletSpeed;
-        //if (hasAuthority)localBullet.AddComponent<Bullet_Shooter>();
-
+        /*Rotation*/ Quaternion.identity);
+        localBullet.transform.LookAt(ShootingRot);
+        CmdUlt(pos,ShootingRot);
+        localBullet.GetComponent<Rigidbody>().velocity = localBullet.transform.forward * ultBulletSpeed;
+        Destroy(localBullet,3f);
         mana -= 100;
     }
 
@@ -401,6 +417,16 @@ public class ShooterNETWORK : NetworkBehaviour
             CanMove = false;
         }
     }
+    public void changeMana(float changeAmount){
+        if(hasAuthority)
+        CmdchangeMana(changeAmount);
+    }
+
+    [Command]
+    public void CmdchangeMana(float changeAmount){
+        mana+=changeAmount;
+    }
+
      [Command]
     public void CmdChangeHealth(float value) {
         health+=value;
@@ -413,7 +439,7 @@ public class ShooterNETWORK : NetworkBehaviour
                 CmdChangeHealth(collision.gameObject.GetComponent<Bullet_Enemy>().damage);
                 //Instansiate Damage Particle
             }else if(collision.gameObject.tag=="healingBullet"){
-                CmdChangeHealth(collision.gameObject.GetComponent<Bullet_Healer>().damage);
+                CmdChangeHealth(-collision.gameObject.GetComponent<Bullet_Healer>().damage);
                 //instansiate Healing Paticle 
 
             }
